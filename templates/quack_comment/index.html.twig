@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quack index{% endblock %}
+
+{% block body %}
+    <h1>Quack index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Author</th>
+                <th>Message</th>
+                <th>Picture</th>
+                <th>Datetime</th>
+                <th>Tags</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for quack in quacks %}
+            <tr>
+
+
+                <td>{{ quack.author }}</td>
+
+                <td>{{ quack.message }}</td>
+                <td>{{ quack.picture }}</td>
+                <td>{{ quack.datetime }}</td>
+                <td>{{ quack.tags }}</td>
+                <td>
+                    <a href="{{ path('quack_comment_edit', {'id': quack.id}) }}">Comment</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

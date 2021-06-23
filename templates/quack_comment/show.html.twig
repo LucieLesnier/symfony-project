@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quack{% endblock %}
+
+{% block body %}
+    <h1>Quack</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Author</th>
+                <td>{{ quack.author }}</td>
+            </tr>
+            <tr>
+                <th>Message</th>
+                <td>{{ quack.message }}</td>
+            </tr>
+            <tr>
+                <th>Picture</th>
+                <td>{{ quack.picture }}</td>
+            </tr>
+            <tr>
+                <th>Datetime</th>
+                <td>{{ quack.datetime }}</td>
+            </tr>
+            <tr>
+                <th>Tags</th>
+                <td>{{ quack.tags }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('quack_comment_index') }}">back to list</a>
+
+    <a href="{{ path('quack_comment_edit', {'id': quack.id}) }}">edit</a>
+
+    {{ include('quack_comment/_delete_form.html.twig') }}
+{% endblock %}
