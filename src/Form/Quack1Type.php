@@ -14,9 +14,7 @@ class Quack1Type extends AbstractType
         $builder
             ->add('message')
             ->add('picture')
-            ->add('datetime')
             ->add('tags')
-            ->add('author')
         ;
     }
 

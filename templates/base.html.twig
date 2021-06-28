@@ -3,18 +3,66 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+
+
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
+
         {% block stylesheets %}
+
+
+            <link href="{{  asset('css/styles.css')}}" rel="stylesheet" />
+            <script>if ( top !== self ) top.location.replace( self.location.href );// Hey, don't iframe my iframe!</script>
+
+
+
             {#{{ encore_entry_link_tags('app') }}#}
         {% endblock %}
+        <script src="{{  asset('js/jquery-3.2.1.min.js')}}"></script>
+        <script src="{{  asset('js/parallax.min.js')}}"></script>
+        <script>
+            function detectMsBrowser() {
+                using_ms_browser =
+                    navigator.appName == "Microsoft Internet Explorer" ||
+                    (navigator.appName == "Netscape" &&
+                        navigator.appVersion.indexOf("Edge") > -1) ||
+                    (navigator.appName == "Netscape" &&
+                        navigator.appVersion.indexOf("Trident") > -1);
 
+                if (using_ms_browser == true) {
+                    alert(
+                        "Please use Chrome or Firefox for the best browsing experience!"
+                    );
+                }
+            }
+            function setBrandMarginTop() {
+                var bottomContainerHeight = $(".tm-welcome-container").height();
+
+                $(".tm-brand-container-outer").css({
+                    "margin-top": -bottomContainerHeight + "px"
+                });
+            }
+
+            $(function() {
+                setBrandMarginTop();
+                detectMsBrowser();
+
+                // Handle window resize event
+                $(window).resize(function() {
+                    setBrandMarginTop();
+                });
+            });
+        </script>
         {% block javascripts %}
+
             {#{{ encore_entry_script_tags('app') }}#}
         {% endblock %}
+
     </head>
     <body>
 
-        {% block body %}{% endblock %}
+
+        {% block body %}
+       {% endblock %}
     </body>
 </html>

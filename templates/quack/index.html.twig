@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quackbook{% endblock %}
+
+{% block body %}
+
+
+
+    {% for quack in quacks %}
+        <a href="{{ path('quack_new') }}"><button type="button"> Create new </button></a>
+<table>
+        <tr>
+        <td>  {{ quack.author.duckname }}</td>
+            <td>{{ quack.datetime|date }}</td>
+        </tr>
+    <br>
+    <tr>
+        <td>{{ quack.message }}</td>
+    </tr>
+</table>
+        <a href="{{  path('quack_comment_new', {'id': quack.id}) }}"><button type="button"> Comment </button></a>
+        {% for quackComment in quack.quackComments %}
+            <h4><strong>COMMENTS :</strong></h4>
+            <table>
+                <tr>
+                    <td>{{ quackComment.author}} :</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ quackComment.comment }}
+                    </td>
+                </tr>
+            </table>
+            <button type="submit"> <a href=" {{ path('quack_show', {'id': quack.id}) }}">SHOW</a></button>
+            <button type="button"><a href="{{  path('quack_comment_new', {'id': quack.id}) }}">NEW</a></button>
+
+            {% for quack in quacks %}
+    {% for quackComment in quack.quackComments %}
+
+    {% else %}
+    {% endfor %}
+    {% endfor %}
+
+
+  {% endfor %}
+    {% endfor %}
+
+
+                    {% endblock %}

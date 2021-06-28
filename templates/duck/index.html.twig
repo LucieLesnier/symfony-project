@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Duck index{% endblock %}
+
+{% block body %}
+<!-- Welcome Section -->
+<!-- Welcome Section -->
+<section id="tmWelcome" class="parallax-window" data-parallax="scroll" data-image-src="{{ asset('img/mallard-pair-717x403.jpg') }}">
+    <div class="container-fluid tm-brand-container-outer">
+        <div class="row">
+            <div class="col-12">
+                <!-- Logo Area -->
+                <!-- Black transparent bg -->
+                <div class="ml-auto mr-0 tm-bg-black-transparent text-white tm-brand-container-inner">
+                    <div class="tm-brand-container text-center">
+                        <h1 class="tm-brand-name">Quackbook</h1>
+                        <p class="tm-brand-description mb-0">So ducking dumb</p>
+
+                        <p class="tm-brand-description mb-0">What the duck ?</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Duckname</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for duck in ducks %}
+            <tr>
+                <td>{{ duck.id }}</td>
+                <td>{{ duck.email }}</td>
+                <td>{{ duck.duckname }}</td>
+                <td>{{ duck.firstname }}</td>
+                <td>{{ duck.lastname }}</td>
+                <td>
+                    <a href="{{ path('duck_show', {'id': duck.id}) }}">show</a>
+                    <a href="{{ path('duck_edit', {'id': duck.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('duck_new') }}">Create new</a>
+{% endblock %}

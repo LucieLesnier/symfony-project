@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Quack;
-use App\Form\Quack1Type;
-use App\Repository\QuackRepository;
+use App\Entity\QuackComment;
+use App\Form\QuackComment1Type;
+use App\Repository\QuackCommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,32 +19,34 @@ class QuackCommentController extends AbstractController
     /**
      * @Route("/", name="quack_comment_index", methods={"GET"})
      */
-    public function index(QuackRepository $quackRepository): Response
+    public function index(QuackCommentRepository $quackCommentRepository): Response
     {
         return $this->render('quack_comment/index.html.twig', [
-            'quacks' => $quackRepository->findAll(),
+            'quack_comments' => $quackCommentRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/new", name="quack_comment_new", methods={"GET","POST"})
+     * @Route("/{id}/new", name="quack_comment_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Quack $quack): Response
     {
-        $quack = new Quack();
-        $form = $this->createForm(Quack1Type::class, $quack);
+        $quackComment = new QuackComment();
+        $quackComment->setQuack($quack);
+        $quackComment->setAuthor($this->getUser());
+        $form = $this->createForm(QuackComment1Type::class, $quackComment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($quack);
+            $entityManager->persist($quackComment);
             $entityManager->flush();
 
-            return $this->redirectToRoute('quack_comment_index');
+            return $this->redirectToRoute('quack_index');
         }
 
         return $this->render('quack_comment/new.html.twig', [
-            'quack' => $quack,
+            'quack_comment' => $quackComment,
             'form' => $form->createView(),
         ]);
     }
@@ -51,19 +54,19 @@ class QuackCommentController extends AbstractController
     /**
      * @Route("/{id}", name="quack_comment_show", methods={"GET"})
      */
-    public function show(Quack $quack): Response
+    public function show(QuackComment $quackComment): Response
     {
         return $this->render('quack_comment/show.html.twig', [
-            'quack' => $quack,
+            'quack_comment' => $quackComment,
         ]);
     }
 
     /**
      * @Route("/{id}/edit", name="quack_comment_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Quack $quack): Response
+    public function edit(Request $request, QuackComment $quackComment): Response
     {
-        $form = $this->createForm(Quack1Type::class, $quack);
+        $form = $this->createForm(QuackComment1Type::class, $quackComment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -73,7 +76,7 @@ class QuackCommentController extends AbstractController
         }
 
         return $this->render('quack_comment/edit.html.twig', [
-            'quack' => $quack,
+            'quack_comment' => $quackComment,
             'form' => $form->createView(),
         ]);
     }
@@ -81,11 +84,11 @@ class QuackCommentController extends AbstractController
     /**
      * @Route("/{id}", name="quack_comment_delete", methods={"POST"})
      */
-    public function delete(Request $request, Quack $quack): Response
+    public function delete(Request $request, QuackComment $quackComment): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$quack->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$quackComment->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($quack);
+            $entityManager->remove($quackComment);
             $entityManager->flush();
         }
 
