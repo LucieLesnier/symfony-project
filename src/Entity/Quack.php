@@ -50,6 +50,11 @@ class Quack
      */
     private $quackComments;
 
+    /**
+     * @ORM\Column(type="object", nullable=true)
+     */
+    private $alert;
+
     public function __construct()
     {
         $this->quackComments = new ArrayCollection();
@@ -72,7 +77,6 @@ class Quack
 
         return $this;
     }
-
 
 
     public function getPicture(): ?string
@@ -149,6 +153,19 @@ class Quack
                 $quackComment->setQuack(null);
             }
         }
+
+        return $this;
+    }
+}
+/*
+    public function getAlert()
+    {
+        return $this->alert;
+    }
+
+    public function setAlert($alert): self
+    {
+        $this->alert = $alert;
 
         return $this;
     }

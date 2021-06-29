@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Quack;
 use App\Form\Quack1Type;
 use App\Form\QuackType;
+use App\Repository\QuackCommentRepository;
 use App\Repository\QuackRepository;
 use App\Security\Voter\QuackVoter;
 use phpDocumentor\Reflection\Types\This;
@@ -12,12 +13,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\NotifierInterface;
 
 /**
  * @Route("/quack")
  */
 class QuackController extends AbstractController
 {
+
     /**
      * @Route("/", name="quack_index", methods={"GET"})
      */
@@ -55,11 +59,20 @@ class QuackController extends AbstractController
     /**
      * @Route("/{id}", name="quack_show", methods={"GET"})
      */
-    public function show(Quack $quack): Response
+    public function show(Request $request, Quack $quack, QuackCommentRepository $quackCommentRepository, NotifierInterface $notifier, string $photoDir): Response
     {
+      /*  $form = $this->createForm(Quack1Type::class, $quack);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+
+            $notifier->send(new Notification('Can you check your submission? There are some problems with it.', ['browser']));
+            $notifier->setAlert($this->addFlash());
+        }
+        $notifier->send(new Notification('This is not a common comment, it will be reach by an administrator.', ['browser'])); */
         return $this->render('quack/show.html.twig', [
             'quack' => $quack,
         ]);
+
     }
 
     /**

@@ -15,21 +15,26 @@
         </thead>
         <tbody>
         {% for quack_comment in quack_comments %}
+            {% if is_granted('ROLE_ADMIN') %}
             <tr>
                 <td>{{ quack_comment.id }}</td>
                 <td>{{ quack_comment.comment }}</td>
                 <td>
                     <a href="{{ path('quack_comment_show', {'id': quack_comment.id}) }}">show</a>
                     <a href="{{ path('quack_comment_edit', {'id': quack_comment.id}) }}">edit</a>
+                    <a href="{{ path('quack_comment_delete', {'id': quack_comment.id}) }}">delete</a>
                 </td>
             </tr>
-        {% else %}
+
             <tr>
                 <td colspan="3">no records found</td>
             </tr>
+                </tbody>
+                </table>
+            {% else %}
+                <p>VOUS N'AVEZ PAS L'ACCES</p>
+                <a href="{{ path('quack_index') }}">RETOUR A LA PAGE</a>
+            {% endif %}
         {% endfor %}
-        </tbody>
-    </table>
 
-    <a href="{{ path('quack_comment_new', {'id': quack_comment.id}) }}">Create new</a>
 {% endblock %}
