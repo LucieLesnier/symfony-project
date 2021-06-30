@@ -29,11 +29,22 @@
             </tr>
         </tbody>
     </table>
+ <button type="submit">
+        <a href="{{ path('quack_report', {'id': quack.id}) }}">Click here to report the comment to admin</a>
+ </button>
     {% for message in app.flashes('notification') %}
         <div class="alert alert-info alert-dismissible fade show">
             {{ message }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
+
+
+        <p>
+            You signed up as {{ quack.author }} the following email:
+        </p>
+
+
+
     {% endfor %}
 
     <a href="{{ path('quack_index') }}">back to list</a>

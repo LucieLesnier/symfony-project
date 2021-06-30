@@ -23,6 +23,18 @@
 
         {% if  is_granted('ROLE_ADMIN') %}
             {{ include('quack/_delete_form.html.twig') }}
+
+            <table>
+                <tr>
+                    <td>  {{ quack.author.duckname }}</td>
+                    <td>{{ quack.datetime|date }}</td>
+                </tr>
+                <br>
+
+                <tr>
+                    <td>{{ quack.message }}</td>
+                </tr>
+            </table>
         {% else %}
 
 
@@ -47,7 +59,7 @@
 <button type="submit"><a href=" {{ path('quack_show', {'id': quack.id}) }}">SHOW</a></button>
 <button type="button"><a href="{{ path('quack_comment_new', {'id': quack.id}) }}">NEW</a></button>
 
-{% for quack in quacks %}
+
 
 
 
@@ -72,7 +84,6 @@
 
 
         {% else %}
-    {% endfor %}
 
     {% endfor %}
 

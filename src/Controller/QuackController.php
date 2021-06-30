@@ -7,10 +7,14 @@ use App\Form\Quack1Type;
 use App\Repository\QuackCommentRepository;
 use App\Repository\QuackRepository;
 use App\Security\Voter\QuackVoter;
+use App\Service\MailSender;
 use phpDocumentor\Reflection\Types\This;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
@@ -73,13 +77,8 @@ class QuackController extends AbstractController
      */
     public function show(Request $request, Quack $quack, QuackCommentRepository $quackCommentRepository, NotifierInterface $notifier): Response
     {
-        $form = $this->createForm(Quack1Type::class, $quack);
-        $form->handleRequest($request);
-        if ($form->isSubmitted()) {
 
-            $notifier->send(new Notification('Please be careful to be correct with other ducks, or you should be ban without pity.', ['browser']));
-        }
-        $notifier->send(new Notification('This is not a common comment, it will be reach by an administrator.', ['browser']));
+
         return $this->render('quack/show.html.twig', [
             'quack' => $quack,
         ]);
@@ -122,5 +121,18 @@ class QuackController extends AbstractController
         }
 
         return $this->redirectToRoute('quack_index');
+    }
+
+    /**
+     * @Route("/{id}/report", name="quack_report", methods={"GET"})
+     */
+
+    public function report(Quack $quack, MailSender $mailSender)
+    {
+
+        $mailSender->sendNewModerationRequest($quack);
+      return $this->redirectToRoute('quack_show', [
+            'id'=> $quack->getId(),
+        ]);
     }
 }

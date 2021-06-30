@@ -1,3 +1,5 @@
 framework:
     mailer:
+        envelope:
+            sender: 'lucie.lesnier@le-campus-numerique.fr'
         dsn: '%env(MAILER_DSN)%'
