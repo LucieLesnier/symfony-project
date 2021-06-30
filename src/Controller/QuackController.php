@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Quack;
 use App\Form\Quack1Type;
-use App\Form\QuackType;
 use App\Repository\QuackCommentRepository;
 use App\Repository\QuackRepository;
 use App\Security\Voter\QuackVoter;
@@ -23,14 +22,27 @@ class QuackController extends AbstractController
 {
 
     /**
-     * @Route("/", name="quack_index", methods={"GET"})
+     * @Route("/", name="quack_index", methods={"GET", "POST"})
      */
-    public function index(QuackRepository $quackRepository): Response
+    public function index(QuackRepository $quackRepository, Request $request): Response
     {
-        return $this->render('quack/index.html.twig', [
-            'quacks' => $quackRepository->findAll(),
-        ]);
+
+        $value = $request->get('q');
+        $quacks = 'quacks';
+        if (isset($value) && !empty($value)) {
+
+            $quacks = $quackRepository->findByExampleField($value);
+        } else {
+            $quacks = $quackRepository->findAll();
+        }
+
+        return $this->render('quack/index.html.twig',
+            [
+                'quacks' => $quacks,
+            ]
+        );
     }
+
 
     /**
      * @Route("/new", name="quack_new", methods={"GET","POST"})
@@ -59,16 +71,15 @@ class QuackController extends AbstractController
     /**
      * @Route("/{id}", name="quack_show", methods={"GET"})
      */
-    public function show(Request $request, Quack $quack, QuackCommentRepository $quackCommentRepository, NotifierInterface $notifier, string $photoDir): Response
+    public function show(Request $request, Quack $quack, QuackCommentRepository $quackCommentRepository, NotifierInterface $notifier): Response
     {
-      /*  $form = $this->createForm(Quack1Type::class, $quack);
+        $form = $this->createForm(Quack1Type::class, $quack);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
 
-            $notifier->send(new Notification('Can you check your submission? There are some problems with it.', ['browser']));
-            $notifier->setAlert($this->addFlash());
+            $notifier->send(new Notification('Please be careful to be correct with other ducks, or you should be ban without pity.', ['browser']));
         }
-        $notifier->send(new Notification('This is not a common comment, it will be reach by an administrator.', ['browser'])); */
+        $notifier->send(new Notification('This is not a common comment, it will be reach by an administrator.', ['browser']));
         return $this->render('quack/show.html.twig', [
             'quack' => $quack,
         ]);
@@ -104,7 +115,7 @@ class QuackController extends AbstractController
      */
     public function delete(Request $request, Quack $quack): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$quack->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $quack->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($quack);
             $entityManager->flush();

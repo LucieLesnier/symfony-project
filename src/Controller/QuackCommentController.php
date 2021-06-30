@@ -6,6 +6,7 @@ use App\Entity\Quack;
 use App\Entity\QuackComment;
 use App\Form\QuackComment1Type;
 use App\Repository\QuackCommentRepository;
+use App\Service\SiteUpdateManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -95,4 +96,5 @@ class QuackCommentController extends AbstractController
 
         return $this->redirectToRoute('quack_comment_index');
     }
+
 }

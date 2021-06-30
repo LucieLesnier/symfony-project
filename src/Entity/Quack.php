@@ -50,10 +50,6 @@ class Quack
      */
     private $quackComments;
 
-    /**
-     * @ORM\Column(type="object", nullable=true)
-     */
-    private $alert;
 
     public function __construct()
     {
@@ -157,16 +153,4 @@ class Quack
         return $this;
     }
 }
-/*
-    public function getAlert()
-    {
-        return $this->alert;
-    }
 
-    public function setAlert($alert): self
-    {
-        $this->alert = $alert;
-
-        return $this;
-    }
-}

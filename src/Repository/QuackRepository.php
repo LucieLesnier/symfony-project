@@ -26,9 +26,13 @@ class QuackRepository extends ServiceEntityRepository
 
     public function findByExampleField($value)
     {
+
         return $this->createQueryBuilder('q')
-            ->andWhere('q.exampleField = :val')
-            ->setParameter('val', $value)
+            ->join('q.author', 'd')
+            ->andWhere('q.message like :val')
+
+            /*->andWhere('q.message = :val')*/
+            ->setParameter('val', '%'.$value.'%')
             ->orderBy('q.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()

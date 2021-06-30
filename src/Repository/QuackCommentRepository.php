@@ -19,11 +19,11 @@ class QuackCommentRepository extends ServiceEntityRepository
         parent::__construct($registry, QuackComment::class);
     }
 
-    // /**
-    //  * @return QuackComment[] Returns an array of QuackComment objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+      * @return QuackComment[] Returns an array of QuackComment objects
+    */
+   /*
+    public function findByExampleField($value): array
     {
         return $this->createQueryBuilder('q')
             ->andWhere('q.exampleField = :val')
@@ -34,7 +34,7 @@ class QuackCommentRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?QuackComment
