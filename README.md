@@ -9,7 +9,7 @@ Install PHP 7.2.5 or higher and these PHP extensions (which are installed and en
  cd projects/
  git clone ...
 
-# make Comoser install the project's dependencies into vendor
+# make Composer install the project's dependencies into vendor
  cd my-project/
  composer install
  
