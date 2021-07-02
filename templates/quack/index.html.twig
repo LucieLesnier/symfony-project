@@ -96,7 +96,7 @@
                         </tr>
 
                     </table>
-                    {% if quackComment.author.email == app.user.username  %}
+                    {% if quackComment.author.email == app.user  %}
                         <button type="submit"><a href="{{ path('quack_comment_delete', {'id': quackComment.id}) }}">DELETE
                                 COMMENT</a>
                         </button>
