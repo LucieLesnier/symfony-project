@@ -5,91 +5,126 @@
 {% block body %}
 
 
-<a href="{{ path('quack_new') }}">
-    <button type="button"> Create new</button>
-</a>
+
+    <button type="submit"><a href="{{ path('quack_new') }}"> Create new </a></button>
+
+
+    <button type="submit"><a href="{{ path('app_register') }}">Sign up </a></button>
+
+
+    <button type="submit"><a href="{{ path('app_login') }}"> Sign in </a></button>
+
     <form class="d-flex" method="get">
 
-        <input class="form-control me-2" name="q" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit"> SEARCH </button>
-        <a href="{{ path('quack_index') }}">back to list</a>
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input class="form-control me-2" name="q" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit"><a> SEARCH</a></button>
+        <button type="button"><a href="{{ path('quack_index') }}">BACK TO LIST</a></button>
 
     </form>
+
+    <div class="list-group">
+        <button type="button"><a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+        </button>
+        <button type="button"><a href="#" class="list-group-item list-group-item-action list-group-item-primary">This is
+                a primary list group item</a></button>
+        <button type="button"><a href="#" class="list-group-item list-group-item-action list-group-item-secondary">This
+                is a secondary list group item</a></button>
+        <button type="button"><a href="#" class="list-group-item list-group-item-action list-group-item-success">This is
+                a success list group item</a></button>
+    </div>
+
+
 
 
     {% for quack in quacks %}
 
 
-
         {% if  is_granted('ROLE_ADMIN') %}
             {{ include('quack/_delete_form.html.twig') }}
 
-            <table>
-                <tr>
+            <table class="quack-post quack-first">
+
+                <tr class="quack-post quack-body">
+                    <img src="{{ asset('img/wild-duck-flying-blue-sky-260nw-777996205.jpg') }}" alt="duck"
+                         width="80" height="80">
+
                     <td>  {{ quack.author.duckname }}</td>
                     <td>{{ quack.datetime|date }}</td>
                 </tr>
                 <br>
-
                 <tr>
                     <td>{{ quack.message }}</td>
                 </tr>
             </table>
         {% else %}
 
-
-            <table>
-                <tr>
-                    <td>  {{ quack.author.duckname }}</td>
-                    <td>{{ quack.datetime|date }}</td>
-                </tr>
+            <div class="post">
+            <table class="quack-post quack-first">
+                <div class="quack-head">
+                    <tr class="quack-post quack-body">
+                        <img src="{{ asset('img/duck.png') }}" alt="duck" width="40" height="40">
+                        <p class="quack-author">  {{ quack.author.duckname }}</p>&nbsp;&nbsp;
+                        <p class="datetime">{{ quack.datetime|date }}</p>
+                    </tr>
+                </div>
                 <br>
 
-                <tr>
-                    <td>{{ quack.message }}</td>
+                <tr class="quack-post quack-message">
+                    <p class="quack-message">{{ quack.message }}</p>
                 </tr>
             </table>
+
         {% endif %}
 
-<a href="{{ path('quack_comment_new', {'id': quack.id}) }}">
-    <button type="button"> Comment</button>
-</a>
-{% for quackComment in quack.quackComments %}
 
-<button type="submit"><a href=" {{ path('quack_show', {'id': quack.id}) }}">SHOW</a></button>
-<button type="button"><a href="{{ path('quack_comment_new', {'id': quack.id}) }}">NEW</a></button>
+        <button type="submit"><a href=" {{ path('quack_show', {'id': quack.id}) }}">SHOW</a></button>
+        <button type="button"><a href="{{ path('quack_comment_new', {'id': quack.id}) }}">NEW</a></button>
 
+        </div>
+        {% for quackComment in quack.quackComments %}
 
 
 
 
-    {% for quackComment in quack.quackComments %}
 
 
-        <h4><strong>COMMENTS :</strong></h4>
-        <table>
-            <tr>
-                <td>{{ quackComment.author }} :</td>
-            </tr>
-            <tr>
-                <td>
-                    {{ quackComment.comment }}
-                </td>
-                <button type="submit"><a href="{{ path('quack_show', {'id': quack.id}) }}">ALERT</a></button>
+            {% for quackComment in quack.quackComments %}
 
-            </tr>
-        </table>
-        <button type="submit"><a href="{{ path('quack_comment_delete', {'id': quackComment.id}) }}">DELETE COMMENT</a>
-        </button>
+                <div class="comments">
+
+                    <h4><strong>COMMENTS : </strong></h4>
+
+                    <table class="quack-comments quack-second">
+                        <tr class="quack-comments quack-first quack-message">
+                            <td>{{ quackComment.author }} :</td>
+                        </tr>
+                        <tr class="quack-first quack-message">
+                            <td>
+                                {{ quackComment.comment }}
+                            </td>
+                        </tr>
+
+                    </table>
+                    {% if quackComment.author.email == app.user.username  %}
+                        <button type="submit"><a href="{{ path('quack_comment_delete', {'id': quackComment.id}) }}">DELETE
+                                COMMENT</a>
+                        </button>
+                        <br>
+                    {% endif %}
+
+                    <button type="submit"><a href="{{ path('quack_show', {'id': quack.id}) }}">ALERT</a>
+                    </button>
+
+                </div>
 
 
-        {% else %}
+            {% else %}
 
+            {% endfor %}
+
+
+        {% endfor %}
     {% endfor %}
 
 
-  {% endfor %}
-    {% endfor %}
-
-
-                    {% endblock %}
+{% endblock %}

@@ -15,6 +15,7 @@ class Quack1Type extends AbstractType
             ->add('message')
             ->add('picture')
             ->add('tags')
+
         ;
     }
 

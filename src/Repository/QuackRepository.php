@@ -24,7 +24,7 @@ class QuackRepository extends ServiceEntityRepository
       * @return Quack[] Returns an array of Quack objects
       */
 
-    public function findByExampleField($value)
+    public function searchInMessages($value)
     {
 
         return $this->createQueryBuilder('q')

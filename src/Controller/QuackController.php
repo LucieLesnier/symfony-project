@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Quack;
+use App\Entity\QuackComment;
 use App\Form\Quack1Type;
+use App\Repository\ApiRepository;
 use App\Repository\QuackCommentRepository;
 use App\Repository\QuackRepository;
 use App\Security\Voter\QuackVoter;
@@ -11,12 +13,12 @@ use App\Service\MailSender;
 use phpDocumentor\Reflection\Types\This;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
 
 /**
@@ -35,7 +37,7 @@ class QuackController extends AbstractController
         $quacks = 'quacks';
         if (isset($value) && !empty($value)) {
 
-            $quacks = $quackRepository->findByExampleField($value);
+            $quacks = $quackRepository->searchInMessages($value);
         } else {
             $quacks = $quackRepository->findAll();
         }
@@ -131,8 +133,21 @@ class QuackController extends AbstractController
     {
 
         $mailSender->sendNewModerationRequest($quack);
-      return $this->redirectToRoute('quack_show', [
-            'id'=> $quack->getId(),
+        return $this->redirectToRoute('quack_show', [
+            'id' => $quack->getId(),
         ]);
     }
+
+    /**
+     * @Route("/filter", name="quack_filter", methods={"GET"})
+     */
+    public function apiRender(ApiRepository $value): JsonResponse
+    {
+
+        $response = $value -> getArrayResult($value);
+
+        return new JsonResponse($response);
+
+    }
+
 }

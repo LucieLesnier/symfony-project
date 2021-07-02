@@ -7,49 +7,63 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Author</th>
-                <td>{{ quack.author }}</td>
-            </tr>
-            <tr>
-                <th>Message</th>
-                <td>{{ quack.message }}</td>
-            </tr>
-            <tr>
-                <th>Picture</th>
-                <td>{{ quack.picture }}</td>
-            </tr>
-            <tr>
-                <th>Datetime</th>
-                <td>{{ quack.datetime|date }}</td>
-            </tr>
-            <tr>
-                <th>Tags</th>
-                <td>{{ quack.tags }}</td>
-            </tr>
+        <tr>
+            <th>Author</th>
+            <td>{{ quack.author }}</td>
+        </tr>
+        <tr>
+            <th>Message&nbsp;</th>
+            <td>&nbsp;{{ quack.message }}</td>
+        </tr>
+        <tr>
+            <th>Picture</th>
+            <td>{{ quack.picture }}</td>
+        </tr>
+        <tr>
+            <th>Datetime</th>
+            <td>{{ quack.datetime|date }}</td>
+        </tr>
+        <tr>
+            <th>Tags</th>
+            <td>{{ quack.tags }}</td>
+        </tr>
         </tbody>
     </table>
- <button type="submit">
-        <a href="{{ path('quack_report', {'id': quack.id}) }}">Click here to report the comment to admin</a>
- </button>
-    {% for message in app.flashes('notification') %}
-        <div class="alert alert-info alert-dismissible fade show">
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-
-
-        <p>
-            You signed up as {{ quack.author }} the following email:
-        </p>
 
 
 
-    {% endfor %}
+    <br>
+    <br>
+    <br>
+    {% if app.user is null  %}
+        <h2>YOU HAVE TO LOGIN TO REPORT THE COMMENT</h2>
+        <button type="button"> <a href="{{ path('app_login') }}">LOGIN</a></button>
+        <button type="button"> <a href="{{ path('app_register') }}">REGISTER</a></button>
 
-    <a href="{{ path('quack_index') }}">back to list</a>
+        <button type="submit"><a href="{{ path('quack_index') }}">BACK TO LIST</a></button>
+    {% else %}
 
-    <a href="{{ path('quack_edit', {'id': quack.id}) }}">edit</a>
 
+        <h2><strong>
+                &nbsp;You signed up as : {{ app.user.username }}, <br><br>&nbsp;if you want to report the current comment, click on the button:
+            </strong>
+        </h2>
+
+        <br>
+        <button type="submit">
+            <a href="{{ path('quack_report', {'id': quack.id}) }}">Click here to report the comment to admin</a>
+        </button>
+        <button type="submit"><a href="{{ path('quack_index') }}">BACK TO LIST</a></button>
+
+{% endif %}
+     {% if app.user != null %}
+{% if quack.author.email == app.user.username  %}
+    <button type="button">
+    <a href="{{ path('quack_edit', {'id': quack.id}) }}">EDIT</a>
+    </button>
+    {%  endif %}
+    {% endif %}
+    {% if  is_granted('ROLE_ADMIN') %}
     {{ include('quack/_delete_form.html.twig') }}
+    {% endif %}
 {% endblock %}

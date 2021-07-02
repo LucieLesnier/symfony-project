@@ -25,7 +25,9 @@
                     <a href="{{ path('quack_comment_delete', {'id': quack_comment.id}) }}">delete</a>
                 </td>
             </tr>
-                <a href="{{ path('quack_index') }}">RETOUR A LA PAGE</a>
+                <button type="button">
+                    <a href="{{ path('quack_index') }}">back to list</a>
+                </button>
             <tr>
                 <td colspan="3">no records found</td>
             </tr>
@@ -33,7 +35,9 @@
                 </table>
             {% else %}
                 <p>VOUS N'AVEZ PAS L'ACCES</p>
-                <a href="{{ path('quack_index') }}">RETOUR A LA PAGE</a>
+                <button type="button">
+                    <a href="{{ path('quack_index') }}">back to list</a>
+                </button>
             {% endif %}
         {% endfor %}
 

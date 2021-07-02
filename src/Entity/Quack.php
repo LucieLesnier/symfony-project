@@ -2,51 +2,65 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\ApiRepository;
 use App\Repository\QuackRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=QuackRepository::class)
  */
+#[ApiResource]
 class Quack
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"quack", "duck"})
      */
+
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"quack", "duck"})
+     *
      */
     private $message;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"quack", "duck"})
      */
     private $picture;
 
     /**
      * @ORM\Column(type="datetime", length=255)
+     * @Groups({"quack", "duck"})
      */
     private $datetime;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"quack", "duck"})
      */
     private $tags;
 
     /**
      * @ORM\ManyToOne(targetEntity=Duck::class, inversedBy="quacks")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"quack"})
      */
     private $author;
 
     /**
      * @ORM\OneToMany(targetEntity=QuackComment::class, mappedBy="quack")
+     * @Groups({"quack"})
      */
     private $quackComments;
 
@@ -152,5 +166,6 @@ class Quack
 
         return $this;
     }
+
 }
 

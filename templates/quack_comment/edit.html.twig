@@ -7,7 +7,9 @@
 
     {{ include('quack_comment/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('quack_comment_index') }}">back to list</a>
+    <button type="button">
+        <a href="{{ path('quack_comment_index') }}">back to list</a>
+    </button>
 
     {{ include('quack_comment/_delete_form.html.twig') }}
 {% endblock %}

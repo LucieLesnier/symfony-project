@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=DuckRepository::class)
@@ -20,11 +21,13 @@ class Duck implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"quack", "duck"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"quack", "duck"})
      */
     private $email;
 
@@ -41,26 +44,31 @@ class Duck implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"quack", "duck"})
      */
     private $duckname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"duck"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({ "duck"})
      */
     private $lastname;
 
     /**
      * @ORM\OneToMany(targetEntity=Quack::class, mappedBy="author", orphanRemoval=true)
+     * @Groups({ "duck"})
      */
     private $quacks;
 
     /**
      * @ORM\OneToMany(targetEntity=QuackComment::class, mappedBy="author", orphanRemoval=true)
+     * @Groups({ "duck"})
      */
     private $quackComments;
 
@@ -260,17 +268,5 @@ class Duck implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getDuck(): ?self
-    {
-        return $this->duck;
-    }
 
-    public function setDuck(self $duck): self
-    {
-        // set the owning side of the relation if necessary
-
-        $this->duck = $duck;
-
-        return $this;
-    }
 }
